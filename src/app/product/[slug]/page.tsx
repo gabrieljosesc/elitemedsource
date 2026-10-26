@@ -1,0 +1,249 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ChevronRight, ShieldCheck, Truck, ClipboardCheck, FileText } from "lucide-react";
+import { getProductBySlug, getRelatedProducts } from "@/lib/shop-products";
+import { getDoseSiblings } from "@/lib/peptide-doses";
+import { formatPrice } from "@/lib/utils";
+import { tierQuantityLabel } from "@/lib/price-tiers";
+import ProductGallery from "@/components/product/ProductGallery";
+import ProductReviews from "@/components/product/ProductReviews";
+import AddToOrder from "@/components/product/AddToOrder";
+import ProductCard from "@/components/products/ProductCard";
+import WishlistButton from "@/components/products/WishlistButton";
+
+type Props = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+  if (!product) return {};
+  return {
+    title: product.name,
+    description: product.description ?? undefined,
+  };
+}
+
+export default async function ProductPage({ params }: Props) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+  if (!product) notFound();
+
+  const [related, doseOptions] = await Promise.all([
+    getRelatedProducts(product.categorySlug, product.id, 4),
+    getDoseSiblings(product.categorySlug, product.name, product.slug),
+  ]);
+
+  const stockCopy =
+    product.stockLabel === "in-stock"
+      ? "In stock"
+      : product.stockLabel === "low-stock"
+        ? "Low stock"
+        : "Out of stock";
+
+  return (
+    <div className="mx-auto max-w-[1180px] px-5 sm:px-10 py-10">
+      <nav className="flex items-center gap-1.5 text-[13px] text-ink-faint mb-6 flex-wrap">
+        <Link href="/" className="hover:text-brand transition-colors">
+          Home
+        </Link>
+        <ChevronRight size={13} />
+        <Link href="/shop" className="hover:text-brand transition-colors">
+          Shop
+        </Link>
+        {product.categorySlug && (
+          <>
+            <ChevronRight size={13} />
+            <Link href={`/shop/${product.categorySlug}`} className="hover:text-brand transition-colors">
+              {product.categoryLabel}
+            </Link>
+          </>
+        )}
+        <ChevronRight size={13} />
+        <span className="text-ink truncate max-w-[220px]">{product.name}</span>
+      </nav>
+
+      <div className="grid md:grid-cols-2 gap-10 lg:gap-14">
+        <ProductGallery images={product.images} name={product.name} categoryLabel={product.categoryLabel} />
+
+        <div>
+          {product.categorySlug && (
+            <Link
+              href={`/shop/${product.categorySlug}`}
+              className="eyebrow hover:text-brand transition-colors"
+            >
+              {product.categoryLabel}
+            </Link>
+          )}
+          <h1 className="font-display font-semibold text-[30px] sm:text-[36px] tracking-tight mt-2 mb-1 text-balance">
+            {product.name}
+          </h1>
+          {product.brand && <p className="text-[14px] text-ink-faint mb-4">{product.brand}</p>}
+
+          <div className="flex items-center gap-3 mb-5">
+            {product.isFree ? (
+              <span className="font-sans tabular text-[28px] text-stock font-medium">FREE</span>
+            ) : (
+              <>
+                <span className="font-sans tabular text-[28px] text-accent">{formatPrice(product.price)}</span>
+                <span className="font-sans text-[11px] text-ink-faint tracking-wide">per unit</span>
+              </>
+            )}
+            <WishlistButton productId={product.id} productName={product.name} className="ml-auto border border-line rounded-lg p-2" />
+          </div>
+          {product.isFree && (
+            <p className="text-[14px] text-ink-soft -mt-3 mb-5">
+              Complimentary with your peptide order — add it to your cart at no charge.
+            </p>
+          )}
+
+          <span
+            className={`inline-flex items-center gap-1.5 font-sans text-[10px] tracking-wide px-2.5 py-1 rounded-full mb-6 ${
+              product.stockLabel === "in-stock"
+                ? "bg-stock-bg text-stock"
+                : product.stockLabel === "low-stock"
+                  ? "bg-low-bg text-low"
+                  : "bg-line text-ink-faint"
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                product.stockLabel === "in-stock"
+                  ? "bg-stock"
+                  : product.stockLabel === "low-stock"
+                    ? "bg-low"
+                    : "bg-ink-faint"
+              }`}
+            />
+            {stockCopy}
+          </span>
+
+          {doseOptions.length > 0 && (
+            <div className="mb-5">
+              <p className="font-sans text-[9.5px] tracking-wide uppercase text-ink-faint mb-2">Strength</p>
+              <div className="flex flex-wrap gap-2">
+                {doseOptions.map((opt) =>
+                  opt.current ? (
+                    <span
+                      key={opt.slug}
+                      aria-current="true"
+                      className="font-sans tabular text-[13px] rounded-lg bg-brand text-white px-3.5 py-1.5"
+                    >
+                      {opt.dose}
+                    </span>
+                  ) : (
+                    <Link
+                      key={opt.slug}
+                      href={`/product/${opt.slug}`}
+                      className="font-sans tabular text-[13px] rounded-lg border border-line-strong text-ink-soft px-3.5 py-1.5 hover:border-brand hover:text-brand transition-colors"
+                    >
+                      {opt.dose}
+                    </Link>
+                  )
+                )}
+              </div>
+            </div>
+          )}
+
+          {product.priceTiers.length > 0 && (
+            <div className="border border-line rounded-md overflow-hidden mb-5 max-w-[340px]">
+              <p className="font-sans text-[9.5px] tracking-wide uppercase text-ink-faint bg-surface border-b border-line px-3.5 py-2">
+                Volume pricing
+              </p>
+              <ul className="divide-y divide-line">
+                {product.priceTiers.map((t) => (
+                  <li key={t.minQ} className="flex justify-between px-3.5 py-2 text-[13px]">
+                    <span className="text-ink-soft font-sans tabular">{tierQuantityLabel(t)} units</span>
+                    <span className="font-sans tabular text-ink">
+                      {formatPrice(t.price)} <span className="text-ink-faint">/ unit</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <AddToOrder product={product} />
+
+          {product.sku && <p className="font-sans text-[11.5px] text-ink-faint mt-4">SKU: {product.sku}</p>}
+
+          {(product.coaUrl || product.additionalCoas.length > 0) && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {product.coaUrl && (
+                <a
+                  href={product.coaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-line-strong rounded-lg px-4 py-2.5 text-[13px] font-medium text-ink hover:border-brand hover:text-brand transition-colors"
+                >
+                  <FileText size={15} className="text-brand" />
+                  Certificate of Analysis (PDF)
+                </a>
+              )}
+              {product.additionalCoas.map((c) => (
+                <a
+                  key={c.url}
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-line-strong rounded-lg px-4 py-2.5 text-[13px] font-medium text-ink hover:border-brand hover:text-brand transition-colors"
+                >
+                  <FileText size={15} className="text-brand" />
+                  {c.label}
+                </a>
+              ))}
+            </div>
+          )}
+
+          <ul className="flex flex-col gap-2 border-t border-line mt-6 pt-5 text-[13px] text-ink-soft">
+            <li className="flex items-center gap-2">
+              <ShieldCheck size={16} className="text-brand shrink-0" />
+              Verified authentic stock
+            </li>
+            <li className="flex items-center gap-2">
+              <Truck size={16} className="text-brand shrink-0" />
+              Cold-chain shipping, dispatched in 24h
+            </li>
+            <li className="flex items-center gap-2">
+              <ClipboardCheck size={16} className="text-brand shrink-0" />
+              Trade-net pricing with volume tiers on eligible products
+            </li>
+          </ul>
+
+          {product.specs.length > 0 && (
+            <div className="grid grid-cols-2 gap-px bg-line border border-line rounded-md overflow-hidden mt-6">
+              {product.specs.map((s) => (
+                <div key={s.label} className="bg-card px-3.5 py-3">
+                  <div className="font-sans text-[9.5px] tracking-wide uppercase text-ink-faint mb-0.5">
+                    {s.label}
+                  </div>
+                  <div className="font-sans text-[14px] text-ink tabular">{s.value}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {product.description && (
+            <p className="text-[14.5px] text-ink-soft leading-relaxed mt-6 max-w-[56ch]">
+              {product.description}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <ProductReviews productId={product.id} slug={product.slug} />
+
+      {related.length > 0 && (
+        <section className="mt-16 pt-10 border-t border-line">
+          <p className="eyebrow mb-2">More from {product.categoryLabel}</p>
+          <h2 className="font-display font-semibold text-[24px] tracking-tight mb-6">You may also need</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
