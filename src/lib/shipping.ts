@@ -1,4 +1,4 @@
-// Mirrors peakmedical's shipping policy:
+// Shipping policy:
 // your first order always ships free; after that, free at $800+,
 // $50 on $500-$799.99, $100 under $500.
 export const FREE_SHIPPING_THRESHOLD = 800;

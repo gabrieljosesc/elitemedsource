@@ -10,7 +10,7 @@ export default function CartBadge() {
   return (
     <Link
       href="/cart"
-      aria-label={`Cart, ${count} items`}
+      aria-label={`Cart, ${count} ${count === 1 ? "item" : "items"}`}
       className="relative inline-flex items-center gap-2 rounded-full bg-brand text-white px-3.5 py-2 text-[13.5px] font-medium hover:bg-brand-deep transition-colors"
     >
       <ShoppingBag size={16} />

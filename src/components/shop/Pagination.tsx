@@ -30,7 +30,7 @@ export default function Pagination({
   });
 
   return (
-    <nav className="flex items-center justify-center gap-1.5 pt-2" aria-label="Pagination">
+    <nav className="flex flex-wrap items-center justify-center gap-1.5 pt-2" aria-label="Pagination">
       <PageLink href={buildUrl(page - 1)} disabled={page === 1} label="Prev" />
 
       {pages[0] > 1 && (

@@ -57,7 +57,7 @@ async function nextReferenceNumber(
   const { data } = await admin
     .from("orders")
     .select("reference_number")
-    .like("reference_number", "AMW-%")
+    .like("reference_number", "EMS-%")
     .order("created_at", { ascending: false })
     .limit(500);
 
@@ -66,7 +66,7 @@ async function nextReferenceNumber(
     const match = row.reference_number.match(/(\d+)$/);
     if (match) max = Math.max(max, parseInt(match[1], 10));
   }
-  return `AMW-${max + 1 + attempt}`;
+  return `EMS-${max + 1 + attempt}`;
 }
 
 export async function isFirstOrder(): Promise<boolean> {

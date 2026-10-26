@@ -13,17 +13,16 @@ type WishlistContextValue = {
 
 const WishlistContext = createContext<WishlistContextValue | null>(null);
 
+// Nothing to sync until the Supabase project is configured.
+const SUPABASE_CONFIGURED = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [productIds, setProductIds] = useState<Set<string>>(new Set());
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(!SUPABASE_CONFIGURED);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Nothing to sync until the Supabase project is configured.
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      setLoaded(true);
-      return;
-    }
+    if (!SUPABASE_CONFIGURED) return;
     const supabase = createClient();
     let cancelled = false;
 

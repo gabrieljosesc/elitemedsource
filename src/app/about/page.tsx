@@ -6,23 +6,23 @@ export default function AboutPage() {
   return (
     <InfoPage
       eyebrow="Company"
-      title="Specialty supply, done properly."
-      lede="Elite MedSource supplies licensed clinics and practitioners with brand-name injectables, dermal fillers, and aesthetic products — sourced authentic and shipped cold-chain nationwide."
+      title="Rheumatology supply, done properly."
+      lede="Elite MedSource supplies rheumatology practices and infusion centers with brand-name biologics and specialty injectables — plus orthopedic, aesthetic, and peptide lines — sourced authentic and shipped cold-chain nationwide."
     >
       <InfoSection title="Who we serve">
         <p>
-          We work exclusively with credentialed medical professionals: dermatology and aesthetic clinics,
-          orthopedic and rheumatology practices, med spas under physician direction, and hospital
-          purchasing groups. Every account is verified against a current medical license before trade
+          We work exclusively with credentialed medical professionals: rheumatology practices and
+          infusion centers first, alongside orthopedic clinics, dermatology and aesthetic practices,
+          med spas under physician direction, and hospital purchasing groups. Every account is verified against a current medical license before trade
           pricing is unlocked.
         </p>
       </InfoSection>
       <InfoSection title="How we source">
         <p>
           Every product is sourced through authorized distribution channels with full batch traceability.
-          We stock the brands clinics actually reorder — Juvéderm, Botox, Restylane, Dysport, Xeomin,
-          Synvisc, and more than ninety others — at true trade prices, with volume tiers on eligible
-          products.
+          We stock the brands clinics actually reorder — Actemra, Cimzia, Orencia, Remicade, Botox,
+          Juvéderm, Restylane, Synvisc, and more than ninety others — at true trade prices, with volume
+          tiers on eligible products.
         </p>
       </InfoSection>
       <InfoSection title="How we ship">

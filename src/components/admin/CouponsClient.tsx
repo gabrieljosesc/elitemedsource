@@ -55,7 +55,7 @@ export default function CouponsClient({ coupons }: { coupons: Coupon[] }) {
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
           <h1 className="font-display font-semibold text-[28px] tracking-tight">Coupons</h1>
-          <p className="text-[14px] text-ink-soft mt-1">{coupons.length} coupons</p>
+          <p className="text-[14px] text-ink-soft mt-1">{coupons.length} {coupons.length === 1 ? "coupon" : "coupons"}</p>
         </div>
         <button
           type="button"

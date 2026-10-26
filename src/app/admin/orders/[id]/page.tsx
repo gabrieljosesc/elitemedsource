@@ -102,7 +102,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         </span>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
         <div className="flex flex-col gap-5">
           <section className="bg-card border border-line rounded-xl p-5">
             <h2 className="eyebrow mb-3">Customer</h2>

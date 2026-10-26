@@ -23,7 +23,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
 
   return (
     <div className="mx-auto max-w-[1180px] px-5 sm:px-10 py-10">
-      <div className="grid lg:grid-cols-[260px_1fr] gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start">
         <AccountSidebar
           displayName={displayName}
           email={profile?.email ?? user.email ?? ""}
