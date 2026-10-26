@@ -12,10 +12,10 @@ import CategoriesMenu from "@/components/layout/CategoriesMenu";
 import Logo from "@/components/layout/Logo";
 
 const NAV_LINKS = [
-  { href: "/shop/dermal-fillers", label: "Dermal fillers" },
-  { href: "/shop/botulinum-toxins", label: "Botulinum toxins" },
   { href: "/shop/rheumatology", label: "Rheumatology" },
   { href: "/shop/orthopedic-injections", label: "Orthopedic" },
+  { href: "/shop/dermal-fillers", label: "Dermal fillers" },
+  { href: "/shop/botulinum-toxins", label: "Botulinum toxins" },
   { href: "/shop/gynecology", label: "Gynecology" },
   { href: "/peptides", label: "Peptides" },
 ];

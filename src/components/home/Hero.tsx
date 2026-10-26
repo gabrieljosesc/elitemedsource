@@ -10,29 +10,30 @@ export default function Hero({ products }: { products: HeroProduct[] }) {
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-card border border-line px-3 py-1.5 text-[12.5px] font-medium text-ink-soft shadow-soft">
             <span className="w-1.5 h-1.5 rounded-full bg-stock" />
-            Trusted by licensed clinics nationwide
+            Rheumatology-focused supplier for licensed clinics
           </span>
           <h1 className="font-display font-bold text-[40px] sm:text-[56px] lg:text-[64px] leading-[1.05] tracking-tight text-balance mt-5">
-            Brand-name medical supply at <span className="text-brand">true trade prices.</span>
+            Rheumatology biologics at <span className="text-brand">true trade prices.</span>
           </h1>
           <p className="text-[17px] sm:text-[18px] text-ink-soft max-w-[46ch] mt-5 mb-8 leading-relaxed">
-            Dermal fillers, botulinum toxins, orthopedic injectables, and research peptides —
-            sourced authentic, shipped cold-chain, and priced for the professionals who order them.
+            Actemra, Cimzia, Orencia, Remicade, and the specialty injectables your practice
+            reorders — plus orthopedic, aesthetic, and peptide lines — sourced authentic and
+            shipped cold-chain nationwide.
           </p>
 
           <div className="flex gap-3 flex-wrap mb-8">
             <Link
-              href="/shop"
+              href="/shop/rheumatology"
               className="inline-flex items-center gap-2 rounded-full bg-brand text-white font-medium text-[15px] px-6 py-3.5 hover:bg-brand-deep transition-colors shadow-soft"
             >
-              Browse the catalog
+              Shop rheumatology
               <ArrowRight size={16} />
             </Link>
             <Link
-              href="/auth/signup"
+              href="/shop"
               className="inline-flex items-center gap-2 rounded-full bg-card border border-line text-ink font-medium text-[15px] px-6 py-3.5 hover:border-line-strong hover:bg-surface transition-colors"
             >
-              Create an account
+              Browse the full catalog
             </Link>
           </div>
 

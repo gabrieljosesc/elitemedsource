@@ -4,9 +4,10 @@ import Logo from "@/components/layout/Logo";
 import { SITE, phoneHref } from "@/lib/site";
 
 const SHOP_LINKS = [
+  { href: "/shop/rheumatology", label: "Rheumatology" },
+  { href: "/shop/orthopedic-injections", label: "Orthopedic injections" },
   { href: "/shop/dermal-fillers", label: "Dermal fillers" },
   { href: "/shop/botulinum-toxins", label: "Botulinum toxins" },
-  { href: "/shop/orthopedic-injections", label: "Orthopedic injections" },
   { href: "/peptides", label: "Peptides" },
   { href: "/shop", label: "All categories" },
 ];

@@ -9,9 +9,9 @@
  */
 export const SITE = {
   name: "Elite MedSource",
-  tagline: "Specialty medical & aesthetic supply",
+  tagline: "Rheumatology & specialty medical supply",
   description:
-    "Wholesale medical and aesthetic supply for licensed professionals — dermal fillers, botulinum toxins, orthopedic injectables, and peptides, sourced authentic and shipped cold-chain nationwide.",
+    "Wholesale rheumatology biologics and specialty medical supply for licensed professionals — plus orthopedic injectables, dermal fillers, botulinum toxins, and peptides, sourced authentic and shipped cold-chain nationwide.",
   domain: "elitemedsource.com",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://elitemedsource.com",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@elitemedsource.com",

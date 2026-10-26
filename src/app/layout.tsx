@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   keywords: [
+    "rheumatology wholesale",
+    "biologics supplier",
     "medical wholesale",
     "dermal fillers",
     "botulinum toxins",

@@ -31,23 +31,23 @@ const FALLBACK_CATEGORIES: HomeCategory[] = [
 ];
 
 const FALLBACK_HERO_PRODUCT: HeroProduct = {
-  id: "juvederm-voluma-xc",
-  slug: "juvederm-voluma-xc",
-  name: "Juvéderm Voluma XC",
-  brand: "Allergan Aesthetics",
-  price: 359,
-  sku: "JUV-VOL-2",
-  specLine: "2 × 1.0 mL · 20 mg/mL HA",
+  id: "remicade-100mg-vial",
+  slug: "remicade-100mg-vial",
+  name: "Remicade 100mg vial",
+  brand: "Remicade",
+  price: 549,
+  sku: "RHE-REM-100",
+  specLine: "100 mg · lyophilized · single vial",
   stockLabel: "in-stock",
-  categoryLabel: "Dermal filler",
+  categoryLabel: "Rheumatology",
   image: null,
   priceTiers: [],
   isFree: false,
   specs: [
-    { label: "Volume", value: "2 × 1.0 mL" },
-    { label: "HA conc.", value: "20 mg/mL" },
-    { label: "Lidocaine", value: "0.3%" },
-    { label: "Exp.", value: "2027-04" },
+    { label: "Strength", value: "100 mg" },
+    { label: "Form", value: "Lyophilized" },
+    { label: "Pack", value: "1 vial" },
+    { label: "Storage", value: "2–8 °C" },
   ],
 };
 
@@ -118,31 +118,77 @@ export async function getBestSellers(): Promise<CatalogProduct[]> {
   }
 }
 
+// The category the home page leads with. Hero slides and the spotlight
+// section come from here; other categories backfill when it runs short.
+export const FOCUS_CATEGORY_SLUG = "rheumatology";
+
 // Optional: pin specific product slugs to the hero carousel (in slide
-// order). Leave empty to show featured products with a photo.
+// order). Leave empty to lead with the focus category's products.
 const HERO_PRODUCT_SLUGS: string[] = [];
+
+async function getFocusCategoryId(admin: ReturnType<typeof createAdminClient>) {
+  const { data } = await admin.from("categories").select("id").eq("slug", FOCUS_CATEGORY_SLUG).single();
+  return data?.id ?? null;
+}
+
+/** In-stock products from the focus category (featured first), for the home spotlight. */
+export async function getFocusCategoryProducts(limit = 8): Promise<CatalogProduct[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  try {
+    const admin = createAdminClient();
+    const categoryId = await getFocusCategoryId(admin);
+    if (!categoryId) return [];
+
+    const { data, error } = await admin
+      .from("products")
+      .select(PRODUCT_FIELDS)
+      .eq("category_id", categoryId)
+      .eq("is_in_stock", true)
+      .order("featured", { ascending: false })
+      .order("name", { ascending: true })
+      .limit(limit);
+
+    if (error || !data) return [];
+    return data.map(mapRow);
+  } catch {
+    return [];
+  }
+}
 
 export async function getHeroProducts(): Promise<HeroProduct[]> {
   if (!isSupabaseConfigured()) return [FALLBACK_HERO_PRODUCT];
 
   try {
     const admin = createAdminClient();
-    const { data: products } = await admin
-      .from("products")
-      .select(PRODUCT_FIELDS)
-      .eq("featured", true)
-      .eq("is_in_stock", true)
-      .limit(20);
+    const categoryId = await getFocusCategoryId(admin);
 
-    if (!products || products.length === 0) return [FALLBACK_HERO_PRODUCT];
+    const [{ data: focus }, { data: featured }] = await Promise.all([
+      categoryId
+        ? admin
+            .from("products")
+            .select(PRODUCT_FIELDS)
+            .eq("category_id", categoryId)
+            .eq("is_in_stock", true)
+            .order("featured", { ascending: false })
+            .order("name", { ascending: true })
+            .limit(20)
+        : Promise.resolve({ data: [] as never[] }),
+      admin.from("products").select(PRODUCT_FIELDS).eq("featured", true).eq("is_in_stock", true).limit(20),
+    ]);
 
-    // Pinned slides first (in their listed order), then other featured
-    // products with a photo as backfill up to five slides.
+    const pool = [...(focus ?? []), ...(featured ?? [])].filter(
+      (p, i, arr) => arr.findIndex((q) => q.id === p.id) === i
+    );
+    if (pool.length === 0) return [FALLBACK_HERO_PRODUCT];
+
+    // Pinned slides first (in their listed order), then focus-category
+    // products with a photo, then other featured products, up to five.
     const pinned = HERO_PRODUCT_SLUGS.flatMap((slug) => {
-      const match = products.find((p) => p.slug === slug);
+      const match = pool.find((p) => p.slug === slug);
       return match ? [match] : [];
     });
-    const backfill = products.filter(
+    const backfill = pool.filter(
       (p) => !HERO_PRODUCT_SLUGS.includes(p.slug) && (p.images ?? []).length > 0
     );
 
