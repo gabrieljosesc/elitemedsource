@@ -2,7 +2,7 @@
 
 /* ============================================================
    Elite MedSource — simple, modern theme
-   White ground · Slate ink · Blue brand · Rounded surfaces
+   White ground · Slate ink · Green brand · Rounded surfaces
    ============================================================ */
 
 @theme {
@@ -21,9 +21,9 @@
   --color-line-strong: #cbd5e1;
 
   /* Brand */
-  --color-brand: #2563eb;
-  --color-brand-deep: #1e40af;
-  --color-brand-tint: #eff6ff;
+  --color-brand: #17956f;
+  --color-brand-deep: #0f6b50;
+  --color-brand-tint: #ecfdf5;
 
   /* Emphasis (prices) */
   --color-accent: #0f172a;

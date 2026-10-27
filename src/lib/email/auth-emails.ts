@@ -2,16 +2,16 @@ import "server-only";
 import { sendTransactionalEmail, type SendEmailResult } from "./send";
 import { SITE } from "@/lib/site";
 
-const BRAND = "#2563eb";
+const BRAND = "#17956f";
+const BRAND_LIGHT = "#34d399";
 const INK = "#0f172a";
 
 function shell(title: string, bodyHtml: string): string {
   return `
   <div style="font-family:Arial,Helvetica,sans-serif;background:#f8fafc;padding:32px 16px">
     <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
-      <div style="background:${BRAND};padding:18px 24px">
-        <span style="color:#ffffff;font-size:19px;font-weight:600">Elite<span style="opacity:.75">MedSource</span></span>
-        <span style="color:#bfdbfe;font-size:10px;letter-spacing:2px;margin-left:8px">MEDICAL SUPPLY</span>
+      <div style="background:${INK};padding:18px 24px">
+        <span style="color:#ffffff;font-size:19px;font-weight:700">Elite<span style="color:${BRAND_LIGHT}">MedSource</span></span>
       </div>
       <div style="padding:26px 24px;color:${INK}">
         <h1 style="font-size:20px;margin:0 0 12px">${title}</h1>
