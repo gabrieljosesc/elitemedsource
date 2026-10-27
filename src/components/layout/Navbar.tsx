@@ -43,12 +43,12 @@ export default async function Navbar() {
         <div className="mx-auto max-w-[1200px] flex items-center justify-between gap-6 px-5 sm:px-8 py-2">
           <span className="hidden sm:inline-flex items-center gap-4">
             {SITE.phone && (
-              <a href={phoneHref(SITE.phone)} className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
+              <a href={phoneHref(SITE.phone)} className="inline-flex items-center gap-1.5 whitespace-nowrap hover:text-white transition-colors">
                 <Phone size={13} />
                 {SITE.phone}
               </a>
             )}
-            <a href={`mailto:${SITE.email}`} className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
+            <a href={`mailto:${SITE.email}`} className="inline-flex items-center gap-1.5 whitespace-nowrap hover:text-white transition-colors">
               <Mail size={13} />
               {SITE.email}
             </a>

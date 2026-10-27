@@ -1,10 +1,26 @@
 import { cn } from "@/lib/utils";
 
+/** Brand colours for the mark and wordmark (navy + clinical green). */
+export const LOGO_NAVY = "#0f172a";
+export const LOGO_GREEN = "#17956f";
+export const LOGO_GREEN_LIGHT = "#34d399";
+
 /**
- * Brand mark: a hexagon (pharma / lab) carrying an "E" whose middle stroke
- * runs as an ECG pulse. Gradient fill from brand to brand-deep.
+ * Brand mark: a capsule split on the diagonal — navy lower half, green upper
+ * half carrying a white plus. `light` swaps the navy half to white for dark
+ * backgrounds.
  */
-export function LogoMark({ size = 32, className }: { size?: number; className?: string }) {
+export function LogoMark({
+  size = 32,
+  light = false,
+  className,
+}: {
+  size?: number;
+  light?: boolean;
+  className?: string;
+}) {
+  const dark = light ? "#ffffff" : LOGO_NAVY;
+  const green = light ? LOGO_GREEN_LIGHT : LOGO_GREEN;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,30 +30,18 @@ export function LogoMark({ size = 32, className }: { size?: number; className?: 
       aria-hidden="true"
       className={cn("shrink-0", className)}
     >
-      <defs>
-        <linearGradient id="ems-mark-grad" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#3b82f6" />
-          <stop offset="1" stopColor="#1e40af" />
-        </linearGradient>
-      </defs>
-      <polygon
-        points="16,1.5 28.6,8.75 28.6,23.25 16,30.5 3.4,23.25 3.4,8.75"
-        fill="url(#ems-mark-grad)"
-        stroke="url(#ems-mark-grad)"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      {/* E: spine, top bar, bottom bar */}
-      <path d="M10 9.5h2.6v13H10z M10 9.5h11v2.5H10z M10 20h11v2.5H10z" fill="#ffffff" />
-      {/* middle stroke as an ECG pulse */}
-      <path
-        d="M12.6 16h1.9l1.6-3.6 2.2 7.2 1.6-3.6h3.1"
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <g transform="rotate(-45 16 16)">
+        {/* lower (navy) half */}
+        <path d="M9.5 10.5h5.9v11H9.5a5.5 5.5 0 0 1 0-11z" fill={dark} />
+        {/* upper (green) half with plus */}
+        <path d="M16.6 10.5h5.9a5.5 5.5 0 0 1 0 11h-5.9z" fill={green} />
+        <path
+          d="M21.3 13.9v4.2M19.2 16h4.2"
+          stroke="#ffffff"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+      </g>
     </svg>
   );
 }
@@ -52,28 +56,19 @@ export default function Logo({
 }) {
   return (
     <span
-      className={cn("inline-flex items-center gap-2.5 select-none", className)}
+      className={cn("inline-flex items-center gap-2 select-none", className)}
       role="img"
       aria-label="Elite MedSource"
     >
-      <LogoMark />
-      <span className="flex flex-col leading-none">
-        <span
-          className={cn(
-            "font-display font-bold text-[19px] tracking-tight",
-            light ? "text-white" : "text-ink"
-          )}
-        >
-          Elite<span className={light ? "text-white/70" : "text-brand"}>MedSource</span>
-        </span>
-        <span
-          className={cn(
-            "text-[9px] font-semibold tracking-[0.22em] uppercase mt-1",
-            light ? "text-white/60" : "text-ink-faint"
-          )}
-        >
-          Medical supply
-        </span>
+      <LogoMark light={light} />
+      <span
+        className={cn(
+          "font-display font-bold text-[21px] leading-none tracking-tight",
+          light ? "text-white" : "text-[#0f172a]"
+        )}
+      >
+        Elite
+        <span style={{ color: light ? LOGO_GREEN_LIGHT : LOGO_GREEN }}>MedSource</span>
       </span>
     </span>
   );

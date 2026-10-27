@@ -15,7 +15,7 @@ export const SITE = {
   domain: "elitemedsource.com",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://elitemedsource.com",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@elitemedsource.com",
-  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "(863) 323-0018",
   fax: process.env.NEXT_PUBLIC_CONTACT_FAX || "",
   /** Shown in the announcement bar and trust strip. */
   shippingPromise: "Your first order ships free — then free on orders $800+",
