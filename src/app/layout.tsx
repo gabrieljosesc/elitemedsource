@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { CartProvider } from "@/hooks/useCart";
@@ -10,16 +10,19 @@ import FloatingCart from "@/components/layout/FloatingCart";
 import NavigationProgress from "@/components/layout/NavigationProgress";
 import { SITE } from "@/lib/site";
 
-const inter = Inter({
+// Fonts are bundled (variable, latin subset) so builds never depend on Google Fonts.
+const inter = localFont({
+  src: "./fonts/inter-latin-wght-normal.woff2",
   variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "100 900",
+  display: "swap",
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const jakarta = localFont({
+  src: "./fonts/plus-jakarta-sans-latin-wght-normal.woff2",
   variable: "--font-jakarta",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: "200 800",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
